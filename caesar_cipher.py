@@ -1,8 +1,11 @@
 # coding=UTF-8
 '''
-Модуль позволяет кодировать и декодировать текст Шифром Цезаря. Поддерживаются русский и английский языки.
+Модуль позволяет кодировать и декодировать текст Шифром Цезаря. Поддерживаются русский и английский языки одновременно.
+
+
 @author: kos
 '''
+from __builtin__ import raw_input
 
 #заглавные буквы алфавитов
 ENG_ALPH = list(unichr(i) for i in range(65,91))
@@ -10,7 +13,21 @@ RUS_ALPH = list(unichr(i) for i in range(1040,1072))
 AVAILABLE_ALPHS = [ENG_ALPH, RUS_ALPH]
 
 def main():
-
+    import sys
+    mode = int(raw_input("""Выберете режим работы программы: 1 для шифрования, 2 для расшифрования
+"""))
+    if mode not in (1, 2):
+        raise ValueError("1 для шифрования, 2 для расшифрования")
+    func = encrypt_string if mode == 1 else  decrypt_string
+    key = int(input("Введите ключ шифрования: "))
+    the_string = raw_input("""Введите текст для обработки:
+""").decode(sys.stdin.encoding)
+    print("Результат:")
+    #print(type(the_string))
+    print(func(unicode(the_string), key))
+    
+    
+    '''
     test_str = u"""это нека1я пробная строка с
 возвратом каретки и some english wor#ds! И это замечательно."""
     test_str = encrypt_string(test_str, 3)
@@ -20,7 +37,8 @@ def main():
 ялдянэплй зэнвпзе е pljb bkdifpe tlo#ap! Е ъпл дэйвфэпвищкл."""
     test_str2 = decrypt_string(test_str2, -3)
     print(test_str2)
-
+    '''
+    
 def encrypt_chr(achr, alph, k):
     if achr.upper() not in alph:
         return achr
